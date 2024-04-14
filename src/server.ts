@@ -1,21 +1,24 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const nodemailer = require("nodemailer");
+import express, { Request, Response, NextFunction } from "express";
+import bodyParser from "body-parser";
+import nodemailer from "nodemailer";
+import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(bodyParser.json());
+app.use(cors());
 
 const transporter = nodemailer.createTransport({
   service: "Gmail",
   auth: {
-    user: "exemple@gmail.com",
-    pass: "----------",
+    user: "wellitonaraujodev@gmail.com",
+    pass: "rogl fcup lfsv qxer",
   },
+  debug: true,
 });
 
-const validateForm = (req, res, next) => {
+const validateForm = (req: Request, res: Response, next: NextFunction) => {
   const { name, email, message } = req.body;
   if (!name || !email || !message) {
     return res.status(400).json({ error: "Todos os campos são obrigatórios." });
@@ -28,12 +31,12 @@ const validateForm = (req, res, next) => {
   next();
 };
 
-app.post("/send-email", validateForm, (req, res) => {
+app.post("/send-email", validateForm, (req: Request, res: Response) => {
   const { name, email, message } = req.body;
 
   const mailOptions = {
     from: email,
-    to: "exemple@gmail.com",
+    to: "wellitonaraujodev@gmail.com",
     subject: "Nova mensagem do formulário de contato",
     text: `Nome: ${name}\nEmail: ${email}\nMensagem: ${message}`,
   };
@@ -49,11 +52,11 @@ app.post("/send-email", validateForm, (req, res) => {
   });
 });
 
-app.use((req, res) => {
+app.use((req: Request, res: Response) => {
   res.status(404).json({ error: "Rota não encontrada." });
 });
 
-app.use((err, req, res, next) => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
   res.status(500).json({ error: "Algo deu errado." });
 });
