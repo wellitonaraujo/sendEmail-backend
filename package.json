@@ -16,6 +16,7 @@
     "nodemailer": "^6.9.13"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.4",
     "@types/body-parser": "^1.19.5",
     "@types/cors": "^2.8.17",
     "@types/node": "^20.12.7",
